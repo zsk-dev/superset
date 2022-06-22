@@ -1,0 +1,3 @@
+from apache/superset:latest-dev
+
+RUN pip install elasticsearch-dbapi
