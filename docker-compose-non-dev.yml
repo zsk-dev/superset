@@ -29,6 +29,8 @@ services:
     image: redis:latest
     container_name: superset_cache
     restart: unless-stopped
+    networks:
+      - dtq-int    
     volumes:
       - redis:/data
 
@@ -37,6 +39,8 @@ services:
     image: postgres:10
     container_name: superset_db
     restart: unless-stopped
+    networks:
+      - dtq-int    
     volumes:
       - db_home:/var/lib/postgresql/data
 
@@ -47,6 +51,8 @@ services:
     command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
     user: "root"
     restart: unless-stopped
+    networks:
+      - dtq-int    
     ports:
       - 8088:8088
     depends_on: *superset-depends-on
@@ -58,6 +64,8 @@ services:
     command: ["/app/docker/docker-init.sh"]
     env_file: docker/.env-non-dev
     depends_on: *superset-depends-on
+    networks:
+      - dtq-int    
     user: "root"
     volumes: *superset-volumes
 
@@ -68,6 +76,8 @@ services:
     env_file: docker/.env-non-dev
     restart: unless-stopped
     depends_on: *superset-depends-on
+    networks:
+      - dtq-int    
     user: "root"
     volumes: *superset-volumes
 
@@ -78,6 +88,8 @@ services:
     env_file: docker/.env-non-dev
     restart: unless-stopped
     depends_on: *superset-depends-on
+    networks:
+      - dtq-int    
     user: "root"
     volumes: *superset-volumes
 
@@ -88,3 +100,7 @@ volumes:
     external: false
   redis:
     external: false
+
+networks:
+  dtq-int:
+    external: true
